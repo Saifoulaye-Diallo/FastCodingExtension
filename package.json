@@ -1,0 +1,78 @@
+{
+  "name": "fast-coding",
+  "displayName": "Fast Coding",
+  "description": "Fast Coding est un plugiciel pour VSCode qui intègre des modèles de langage avancés (GPT-4, Codex, StarCoder, CodeLlama) afin d’assister les développeurs dans la génération de code, la revue et l’optimisation du code, ainsi que la documentation automatique.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.98.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "fastCoding",
+          "title": "Fast Coding",
+          "icon": "./resources/icon.png"
+        }
+      ]
+    },
+    "views": {
+      "fastCoding": [
+        {
+          "id": "fastCoding",
+          "name": "Fast Coding AI",
+          "type": "webview"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "fastCoding.generateCode",
+        "title": "Générer du Code avec AI"
+      },
+      {
+        "command": "fastCoding.reviewCode",
+        "title": "Revoir le Code avec AI"
+      },
+      {
+        "command": "fastCoding.optimizeCode",
+        "title": "Optimiser le Code avec AI"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.98.0",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.16.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.7.2",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "marked": "^15.0.7",
+    "openai": "^4.87.4"
+  }
+}
