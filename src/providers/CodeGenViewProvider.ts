@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { getWebviewContent } from './WebViewContent';
-import { sendMessageToAI } from '../src/extension'; // Importer la nouvelle fonction
+import { getWebviewContent } from '../panels/ChatWebViewContent';
+import { sendMessageToAI } from '../commands/gpt-4-turbo/chatWithAi'; 
 
 export class CodeGenViewProvider implements vscode.WebviewViewProvider {
     private _view?: vscode.WebviewView;
@@ -50,4 +50,8 @@ export class CodeGenViewProvider implements vscode.WebviewViewProvider {
             this._view.webview.postMessage({ command, text });
         }
     }    
+    public getWebview(): vscode.Webview | undefined {
+        return this._view?.webview;
+      }
+      
 }

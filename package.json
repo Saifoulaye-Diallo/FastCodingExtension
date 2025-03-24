@@ -11,6 +11,21 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "Fast Coding",
+      "properties": {
+        "Fast-Coding.model": {
+          "type": "string",
+          "enum": [
+            "GPT-4",
+            "StarCoder",
+            "CodeLlama"
+          ],
+          "default": "GPT-4",
+          "description": "Modèle LLM utilisé pour générer les suggestions de code."
+        }
+      }
+    },
     "viewsContainers": {
       "activitybar": [
         {
@@ -24,7 +39,7 @@
       "fastCoding": [
         {
           "id": "fastCoding",
-          "name": "Fast Coding AI",
+          "name": "Fast Coding",
           "type": "webview"
         }
       ]
@@ -32,17 +47,35 @@
     "commands": [
       {
         "command": "fastCoding.generateCode",
-        "title": "Générer du Code avec AI"
+        "title": "Générer du Code - Fast Coding"
       },
+      {
+        "command": "fastCoding.testHF",
+        "title": "🧪 Tester Hugging Face CodeLlama"
+      },      
       {
         "command": "fastCoding.reviewCode",
-        "title": "Revoir le Code avec AI"
+        "title": "Revue de code - Fast Coding"
       },
       {
-        "command": "fastCoding.optimizeCode",
-        "title": "Optimiser le Code avec AI"
+        "command": "fastCoding.generateDocumentation",
+        "title": "Générer la documentation - Fast Coding"
       }
-    ]
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "fastCoding.reviewCode",
+          "when": "editorHasSelection",
+          "group": "navigation"
+        },
+        {
+          "command": "fastCoding.generateDocumentation",
+          "when": "editorHasSelection",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -73,6 +106,7 @@
   "dependencies": {
     "dotenv": "^16.4.7",
     "marked": "^15.0.7",
+    "node-fetch": "^3.3.2",
     "openai": "^4.87.4"
   }
 }

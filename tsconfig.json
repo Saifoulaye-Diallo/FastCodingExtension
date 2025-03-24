@@ -1,19 +1,23 @@
 {
 	"compilerOptions": {
-	  "module": "Node16", // Utilisez "Node16" pour les modules ESM ou "commonjs" pour CommonJS
-	  "target": "ES2022", // Cible ES2022
-	  "lib": ["ES2022"], // Bibliothèque ES2022
-	  "sourceMap": true, // Générer des fichiers sourceMap pour le débogage
-	  "outDir": "out", // Dossier de sortie pour les fichiers compilés
-	  "rootDir": ".", // Répertoire racine du projet
-	  "baseUrl": ".", // Chemin de base pour les imports
+	  "module": "Node16",                       
+	  "moduleResolution": "Node16",              
+	  "target": "ES2022",                       
+	  "lib": ["ES2022"],
+	  "resolveJsonModule": true,
+	  "esModuleInterop": true,
+	  "sourceMap": true,
+	  "outDir": "out",
+	  "rootDir": "src",
+	  "baseUrl": "./src",                      
 	  "paths": {
-		"*": ["src/*", "providers/*"] // Chemins pour les imports
+		"*": ["*", "providers/*", "commands/*", "ai/*", "utils/*"]
 	  },
-	  "strict": true, // Activer toutes les vérifications de type strictes
-	  "noImplicitReturns": true, // Signaler les erreurs si une fonction ne retourne pas de valeur
-	  "noFallthroughCasesInSwitch": true, // Signaler les erreurs pour les cas non gérés dans les switch
-	  "noUnusedParameters": true // Signaler les erreurs pour les paramètres non utilisés
+	  "strict": true,
+	  "noImplicitReturns": true,
+	  "noFallthroughCasesInSwitch": true,
+	  "noUnusedParameters": true
 	},
-	"include": ["src", "providers", "providers"] // Inclure les dossiers src et providers
+	"include": ["src/**/*"]
   }
+  

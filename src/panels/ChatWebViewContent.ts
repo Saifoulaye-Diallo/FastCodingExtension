@@ -136,7 +136,7 @@ export const getWebviewContent = (): string => {
         <header class="flex items-center mb-4">
             <div class="flex items-center space-x-3">
                 <i class="fas fa-robot text-2xl text-blue-500"></i>
-                <h1 class="text-xl font-semibold text-white">AI Code Assistant</h1>
+                <h1 class="text-xl font-semibold text-white">Fast Coding</h1>
             </div>
         </header>
 
@@ -149,7 +149,7 @@ export const getWebviewContent = (): string => {
                         <i class="fas fa-robot text-blue-500"></i>
                     </div>
                     <div class="bg-[#21262d] rounded-lg p-4 max-w-3xl">
-                        <p>Hello! I'm your AI code assistant. How can I help you today?</p>
+                        <p>👋 Bonjour ! Je suis votre assistant IA pour le code. Que puis-je faire pour vous aujourd’hui&nbsp;?</p>
                     </div>
                 </div>
             </div>
