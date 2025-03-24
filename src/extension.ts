@@ -5,7 +5,7 @@ import { handleTypingEvents } from './providers/AIOnTypeListener';
 import { generateCode } from './commands/gpt-4-turbo/generateCode';
 import { reviewCode } from './commands/gpt-4-turbo/reviewCode';
 import { generateDocumentation } from './commands/gpt-4-turbo/generateDocumentation';
-import { callHuggingFaceModel } from './llms/huggingfaceClient'; // adapte le chemin
+import { callHuggingFaceModelFIM } from './llms/huggingfaceClient'; // adapte le chemin
 // 📌 7️⃣ Activation des commandes dans VSCode
 export function activate(context: vscode.ExtensionContext) {
     console.log('🎉 Fast Coding est maintenant actif !');
@@ -14,14 +14,6 @@ export function activate(context: vscode.ExtensionContext) {
      context.subscriptions.push(
         vscode.window.registerWebviewViewProvider('fastCoding', viewProvider)
     );
-
-    context.subscriptions.push(
-        vscode.commands.registerCommand('fastCoding.testHF', async () => {
-          const prompt = "Écris une fonction Python qui additionne deux nombres.";
-          const result = await callHuggingFaceModel(prompt);
-          vscode.window.showInformationMessage("💡 Réponse HF : " + result.slice(0, 100)); // Limité pour affichage
-        })
-      );
 
 	context.subscriptions.push(
         vscode.commands.registerCommand("fastCoding.generateCode", () => {

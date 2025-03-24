@@ -14,7 +14,7 @@
     "configuration": {
       "title": "Fast Coding",
       "properties": {
-        "Fast-Coding.model": {
+        "Fast_Coding.model": {
           "type": "string",
           "enum": [
             "GPT-4",
@@ -52,7 +52,7 @@
       {
         "command": "fastCoding.testHF",
         "title": "🧪 Tester Hugging Face CodeLlama"
-      },      
+      },
       {
         "command": "fastCoding.reviewCode",
         "title": "Revue de code - Fast Coding"
@@ -92,6 +92,7 @@
     "@types/dotenv": "^6.1.1",
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
+    "@types/node-fetch": "^2.6.12",
     "@types/vscode": "^1.98.0",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@typescript-eslint/parser": "^8.17.0",
