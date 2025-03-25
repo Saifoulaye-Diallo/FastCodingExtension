@@ -1,0 +1,67 @@
+{
+  "total": 10,
+  "passed": 10,
+  "score": "100.00",
+  "results": [
+    {
+      "task_id": "test/0",
+      "passed": true,
+      "prompt": "def return1():\n",
+      "completion": "def return1():\n    return 1"
+    },
+    {
+      "task_id": "test/1",
+      "passed": true,
+      "prompt": "def square(x):\n",
+      "completion": "def square(x):\n    if not isinstance(x, (int, float)):\n        raise TypeError(\"Input must be an integer or float\")\n    return x * x"
+    },
+    {
+      "task_id": "test/2",
+      "passed": true,
+      "prompt": "def is_even(n):\n",
+      "completion": "def is_even(n):\n    if not isinstance(n, int):\n        raise ValueError(\"Input must be an integer\")\n    return n % 2 == 0"
+    },
+    {
+      "task_id": "test/3",
+      "passed": true,
+      "prompt": "def reverse_string(s):\n",
+      "completion": "def reverse_string(s):\n    if not isinstance(s, str):\n        raise ValueError(\"Input must be a string\")\n    return s[::-1]"
+    },
+    {
+      "task_id": "test/4",
+      "passed": true,
+      "prompt": "def factorial(n):\n",
+      "completion": "def factorial(n):\n    if not isinstance(n, int) or n < 0:\n        raise ValueError(\"Input must be a non-negative integer\")\n    if n == 0:\n        return 1\n    result = 1\n    for i in range(1, n + 1):\n        result *= i\n    return result"
+    },
+    {
+      "task_id": "test/5",
+      "passed": true,
+      "prompt": "def count_vowels(s):\n",
+      "completion": "def count_vowels(s):\n    if not isinstance(s, str):\n        raise ValueError(\"Input must be a string\")\n    \n    vowels = \"aeiouAEIOU\"\n    count = 0\n    for char in s:\n        if char in vowels:\n            count += 1\n    return count"
+    },
+    {
+      "task_id": "test/6",
+      "passed": true,
+      "prompt": "def remove_duplicates(lst):\n",
+      "completion": "def remove_duplicates(lst):\n    if not isinstance(lst, list):\n        raise TypeError(\"Input must be a list\")\n    seen = set()\n    result = []\n    for item in lst:\n        if item not in seen:\n            seen.add(item)\n            result.append(item)\n    return result"
+    },
+    {
+      "task_id": "test/7",
+      "passed": true,
+      "prompt": "def fibonacci(n):\n",
+      "completion": "def fibonacci(n):\n    if n < 0:\n        raise ValueError(\"Input must be a non-negative integer\")\n    elif n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        a, b = 0, 1\n        for _ in range(2, n + 1):\n            a, b = b, a + b\n        return b"
+    },
+    {
+      "task_id": "test/8",
+      "passed": true,
+      "prompt": "def flatten(lst):\n",
+      "completion": "def flatten(lst):\n    if not isinstance(lst, list):\n        return [lst]\n    flat_list = []\n    for item in lst:\n        if isinstance(item, list):\n            flat_list.extend(flatten(item))\n        else:\n            flat_list.append(item)\n    return flat_list"
+    },
+    {
+      "task_id": "test/9",
+      "passed": true,
+      "prompt": "def most_frequent(lst):\n",
+      "completion": "def most_frequent(lst):\n    if not lst:\n        return None\n    frequency = {}\n    for item in lst:\n        if item in frequency:\n            frequency[item] += 1\n        else:\n            frequency[item] = 1\n    max_frequency = max(frequency.values())\n    most_frequent_items = [key for key, value in frequency.items() if value == max_frequency]\n    return most_frequent_items[0] if most_frequent_items else None"
+    }
+  ]
+}

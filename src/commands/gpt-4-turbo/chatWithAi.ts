@@ -1,12 +1,31 @@
 
-// 📁 src/ai/generateInlineFunction.ts
 import { openai } from '../../llms/openaiClient.ts';
+
 /**
- * Envoie un message à OpenAI et retourne la réponse
+ * 📬 Envoie un message texte à l'API OpenAI (GPT-4 Turbo) et retourne une réponse formatée.
+ * 
+ * Cette fonction est utilisée pour obtenir du code généré accompagné d’explications pédagogiques.
+ * Le prompt "system" impose un format de réponse clair et structuré :
+ * 
+ * - Un **bloc de code** principal (en markdown, avec le bon langage).
+ * - Une section **explication** avec titres et liste à puces.
+ * - Un **exemple d’utilisation** directement testable.
+ * 
+ * ⚠️ Le modèle est également invité à :
+ * - Adapter la réponse au langage demandé (Python, JS, etc.)
+ * - Refuser les réponses ambiguës ou demander des précisions.
+ * 
+ * @param {string} userMessage - Le message/question/prompt de l'utilisateur.
+ * @returns {Promise<string>} - La réponse complète générée par l'IA, formatée comme demandé.
+ * 
+ * @example
+ * const message = "Implémente une fonction de tri rapide en JavaScript";
+ * const result = await sendMessageToAI(message);
+ * console.log(result); // Retourne un bloc de code JS avec explication et exemple
  */
 export async function sendMessageToAI(userMessage: string): Promise<string> {
     console.log("[Extension] 🧠 Envoi du message au modèle OpenAI :", userMessage);
-    
+
     try {
         const response = await openai.chat.completions.create({
             model: 'gpt-4-turbo',

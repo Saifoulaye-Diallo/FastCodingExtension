@@ -1,16 +1,22 @@
 {
+  "_comment": "🔧 Informations générales de l'extension",
   "name": "fast-coding",
   "displayName": "Fast Coding",
   "description": "Fast Coding est un plugiciel pour VSCode qui intègre des modèles de langage avancés (GPT-4, Codex, StarCoder, CodeLlama) afin d’assister les développeurs dans la génération de code, la revue et l’optimisation du code, ainsi que la documentation automatique.",
   "version": "0.0.1",
   "engines": {
+    "_comment": "Version minimale de VSCode requise",
     "vscode": "^1.98.0"
   },
+  
   "categories": [
     "Other"
   ],
+  "activationEvents": ["*"],
   "main": "./dist/extension.js",
+  "_comment_contributes": "🎛️ Contributions de l'extension à l'interface VSCode",
   "contributes": {
+    "_comment_configuration": "⚙️ Configuration utilisateur : choix du modèle LLM",
     "configuration": {
       "title": "Fast Coding",
       "properties": {
@@ -26,15 +32,17 @@
         }
       }
     },
+    "_comment_activitybar": "📦 Ajout de l'icône dans la barre latérale",
     "viewsContainers": {
       "activitybar": [
         {
           "id": "fastCoding",
           "title": "Fast Coding",
-          "icon": "./resources/icon.png"
+          "icon": "resources/icon.png"
         }
       ]
     },
+    "_comment_webview": "🧩 Vue Web personnalisée dans la section Fast Coding",
     "views": {
       "fastCoding": [
         {
@@ -44,14 +52,11 @@
         }
       ]
     },
+    "_comment_commandes": "⚡ Commandes disponibles dans la palette VSCode",
     "commands": [
       {
         "command": "fastCoding.generateCode",
         "title": "Générer du Code - Fast Coding"
-      },
-      {
-        "command": "fastCoding.testHF",
-        "title": "🧪 Tester Hugging Face CodeLlama"
       },
       {
         "command": "fastCoding.reviewCode",
@@ -62,6 +67,7 @@
         "title": "Générer la documentation - Fast Coding"
       }
     ],
+    "_comment_menus": "📋 Ajout des actions dans le clic-droit de l’éditeur",
     "menus": {
       "editor/context": [
         {
@@ -77,6 +83,7 @@
       ]
     }
   },
+  "_comment_scripts": "🛠️ Scripts de développement et de build",
   "scripts": {
     "vscode:prepublish": "npm run package",
     "compile": "webpack",
@@ -88,6 +95,7 @@
     "lint": "eslint src",
     "test": "vscode-test"
   },
+  "_comment_devDependencies": "📦 Dépendances utilisées uniquement en développement",
   "devDependencies": {
     "@types/dotenv": "^6.1.1",
     "@types/mocha": "^10.0.10",
@@ -98,12 +106,15 @@
     "@typescript-eslint/parser": "^8.17.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
+    "copy-webpack-plugin": "^13.0.0",
     "eslint": "^9.16.0",
     "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.7.2",
     "webpack": "^5.95.0",
     "webpack-cli": "^5.1.4"
   },
+  "_comment_dependencies": "📦 Dépendances nécessaires à l’exécution de l’extension",
   "dependencies": {
     "dotenv": "^16.4.7",
     "marked": "^15.0.7",
