@@ -181,3 +181,4 @@ MIT © Saifoulaye Diallo – UQAR 2025
 ## 📬 Contact
 
 - GitHub : [https://github.com/Saifoulaye-Diallo/fast-coding]([https://github.com/Saifoulaye-Diallo/FassCodingExtension/])
+---
