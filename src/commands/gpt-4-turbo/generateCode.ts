@@ -4,7 +4,7 @@ import {
   getLanguageFromExtension,
   extractLastUnresolvedComment,
   isFunctionAlreadyImplemented
-} from '../../utils/langageUtils.js';
+} from '../../utils/langageUtils';
 
 /**
  * 🧠 Génère du code automatiquement à partir d’un commentaire non résolu dans l’éditeur VSCode.

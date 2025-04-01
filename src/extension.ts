@@ -6,6 +6,7 @@ import { reviewCode } from './commands/gpt-4-turbo/reviewCode';
 import { generateDocumentation } from './commands/gpt-4-turbo/generateDocumentation';
 import { setApiKey } from './commands/gpt-4-turbo/setApiKey';
 import { setExtensionContext } from './utils/context';
+import { generateCode } from './commands/gpt-4-turbo/generateCode';
 /**
  * 📌 7️⃣ Fonction appelée automatiquement lors de l'activation de l’extension.
  * 
@@ -29,13 +30,11 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.registerWebviewViewProvider('fastCoding', viewProvider)
     );
 
-    // 📌 Commande fictive pour tester la génération de code (affiche juste une notification pour le moment)
-	context.subscriptions.push(
-        vscode.commands.registerCommand("fastCoding.generateCode", () => {
-            console.log("[FastCoding] 🎯 Commande 'fastCoding.generateCode' exécutée !");
-            vscode.window.showInformationMessage("🔄 Génération de code en cours...");
-        })
+    // 📌 Commande pour générer de la documentation à partir du code sélectionné
+    context.subscriptions.push(
+        vscode.commands.registerCommand('fastCoding.generateCode', generateCode)
     );
+
 
     // 📌 Enregistrement du provider de complétion inline 
     context.subscriptions.push(
