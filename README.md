@@ -1,8 +1,8 @@
+
 # ⚡ Fast Coding – Extension VS Code
 
-**Fast Coding** est une extension VS Code alimentée par GPT-4 Turbo (OpenAI) qui permet aux développeurs de gagner du temps grâce à l’intelligence artificielle. Elle propose un panneau de chat interactif, la génération de code à partir de commentaires, la documentation automatique, la revue de code, et même la complétion de code en temps réel.
-
-> 🚀 Conçue pour les développeurs Python (et bientôt multi-langages).
+**Fast Coding** est une extension pour Visual Studio Code qui propulse votre productivité avec l’intelligence artificielle (GPT-4 ou GPT-3.5 via OpenAI).  
+Elle permet de **générer du code**, **documenter automatiquement**, **faire des revues de code**, et même **discuter avec un assistant IA** depuis un panneau latéral – le tout sans quitter votre éditeur.
 
 ---
 
@@ -10,85 +10,97 @@
 
 ### Depuis la Marketplace
 
-1. Ouvrez VS Code
-2. Allez dans l’onglet Extensions (`Ctrl + Shift + X`)
+1. Ouvrez Visual Studio Code
+2. Allez dans l’onglet **Extensions** (`Ctrl + Shift + X`)
 3. Recherchez **Fast Coding**
 4. Cliquez sur **Installer**
 
-Ou installez directement avec la ligne de commande :
+Ou via la ligne de commande :
 
 ```bash
 code --install-extension ton-publisher-id.fast-coding
 ```
 
+---
 
 ## 🔐 Configuration
 
-L’extension requiert une **clé API OpenAI** pour fonctionner.
-
-### Étapes :
+Avant de commencer, configurez votre **clé API OpenAI** :
 
 1. Ouvrir la palette de commandes (`Ctrl + Shift + P`)
-2. Taper `Fast Coding: Set API Key`
-3. Entrer votre clé API (GPT-4 ou GPT-3.5)
+2. Rechercher : `Fast Coding: Saisir la clé API`
+3. Entrer votre clé API (`sk-...`)
 
-Vous pouvez aussi configurer le modèle par défaut dans les **Paramètres utilisateur** :
-
-```json
-"fastcoding.model": "gpt-4"
-```
+Votre clé est **stockée localement** de manière sécurisée.
 
 ---
 
-## 💻 Fonctionnalités
+## 💡 Fonctionnalités
 
-### 💬 Panneau de chat intelligent
+### 💬 Panneau de chat IA
 
-- Accessible via l’icône Fast Coding dans la barre latérale gauche.
-- Discutez avec l’IA : posez des questions, demandez de l’aide, générez du code.
+- Cliquez sur l’icône **Fast Coding** dans la barre latérale gauche
+- Posez vos questions ou discutez avec le modèle (ex: "Explique-moi ce code", "Génère une fonction tri")
+- Les réponses s'affichent dans un panneau interactif
 
-### ⚡ Génération de code (palette)
+---
 
-- Écrivez un commentaire ou placez le curseur dans le fichier.
+### ⚡ Génération de code (palette de commandes)
+
+- Écrivez un commentaire dans votre fichier, comme :
+  ```python
+  # Créer une fonction qui retourne le carré d’un nombre
+  ```
 - Ouvrez la palette (`Ctrl + Shift + P`) → `Fast Coding: Générer du code`
-- Le code généré s’insère automatiquement.
+- Le code est généré et automatiquement inséré dans le fichier
+
+---
 
 ### 🧠 Revue de code (clic droit)
 
 - Sélectionnez un bloc de code
-- Clic droit → `Revue de code Fast Coding`
-- Résultat affiché dans le panneau, avec possibilité de copier les suggestions
+- Cliquez droit → `Revue de code Fast Coding`
+- Une analyse complète du code s’affiche dans le panneau
+- Vous pouvez **copier le code suggéré** s’il y a des améliorations
+
+---
 
 ### 📘 Documentation automatique (clic droit)
 
-- Sélectionnez une fonction ou classe
-- Clic droit → `Générer la documentation Fast Coding`
-- Documentation générée et affichée dans le panneau
+- Sélectionnez une fonction ou un bloc de code
+- Cliquez droit → `Générer la documentation Fast Coding`
+- La documentation est générée (ex: docstring Python)
+- Le contenu est copiable directement depuis le panneau
+
+---
 
 ### ✍️ Complétion automatique (inline)
 
-- Suggestions affichées automatiquement pendant la saisie
-- Appuyez sur `Tab` ou `Entrée` pour accepter
+- Pendant la saisie dans VS Code, l’extension propose des complétions IA en temps réel
+- Suggestions affichées sous forme de texte grisé
+- Acceptez avec `Tab` ou `Entrée`
 
 ---
 
-## 🔧 Personnalisation
+## ⚙️ Personnalisation
 
-Personnalisez l’expérience dans les **paramètres VS Code** (`Ctrl + ,`) :
+Vous pouvez personnaliser les prompts et les modèles dans les paramètres de VS Code :
 
-| Paramètre | Description | Exemple |
-|----------|-------------|---------|
-| `fastcoding.apiKey` | Clé API OpenAI | `"sk-..."` |
-| `fastcoding.model` | Modèle IA | `"gpt-4"` ou `"gpt-3.5-turbo"` |
-| `fastcoding.prompts.generate` | Prompt personnalisé pour génération | `"Écris un code Python propre pour..."` |
-| `fastcoding.prompts.review` | Prompt pour revue de code | `"Optimise ce code et détecte les erreurs"` |
-| `fastcoding.prompts.doc` | Prompt pour documentation | `"Génère une doc Python claire"` |
+1. `Fichier > Préférences > Paramètres` (`Ctrl + ,`)
+2. Recherchez `Fast Coding`
+
+### Paramètres disponibles :
+
+| Clé                       | Description                        | Exemple                            |
+|---------------------------|------------------------------------|------------------------------------|
+| `fastcoding.apiKey`       | Clé API OpenAI                     | `"sk-..."`                         |
+| `fastcoding.model`        | Modèle utilisé                     | `"gpt-4"`, `"StarCoder"`,  `"CodeLlama"`   |
 
 ---
 
-## 🧪 Exemples d'utilisation (Python)
+## 🧪 Exemples d’utilisation (Python)
 
-### ✅ Génération de code
+### ✅ Génération
 
 ```python
 # Créer une fonction qui retourne le carré d’un nombre
@@ -105,7 +117,7 @@ def carre(nombre):
 
 ### 🧠 Revue de code
 
-Code sélectionné :
+Sélection :
 
 ```python
 def division(a, b):
@@ -128,38 +140,38 @@ def division(a, b):
 Avant :
 
 ```python
-def soustraction(a, b):
-    return a - b
+def addition(a, b):
+    return a + b
 ```
 
 Après :
 
 ```python
-def soustraction(a, b):
+def addition(a, b):
     """
-    Soustrait deux nombres.
+    Additionne deux nombres.
 
     Args:
         a (int or float): Le premier nombre.
         b (int or float): Le deuxième nombre.
 
     Returns:
-        int or float: Résultat de la soustraction.
+        int or float: Résultat de l'addition.
     """
-    return a - b
+    return a + b
 ```
 
 ---
 
 ### ✍️ Complétion inline
 
-Tapez :
+Vous tapez :
 
 ```python
 def somme(a, b):
 ```
 
-➡️ Suggestion automatique :
+➡️ Suggestion inline :
 
 ```python
     return a + b
@@ -167,32 +179,16 @@ def somme(a, b):
 
 ---
 
-## ❓ FAQ
-
-**Q : Est-ce que l’extension fonctionne avec GPT-3.5 ?**  
-Oui, vous pouvez la configurer dans les paramètres avec `"gpt-3.5-turbo"`.
-
-**Q : Est-ce que mes données sont enregistrées ?**  
-Non. Aucune donnée personnelle ou de code n’est stockée par l’extension.
-
-**Q : Comment changer le modèle ou le prompt ?**  
-Via les paramètres VS Code dans `fastcoding.model` ou `fastcoding.prompts.*`.
-
----
-
 ## 📄 Licence
 
-MIT © [Ton Nom ou Organisation]
+MIT © Saifoulaye Diallo – UQAR 2025
 
 ---
 
 ## 📬 Contact
 
 - GitHub : [https://github.com/ton-utilisateur/fast-coding](https://github.com/ton-utilisateur/fast-coding)
-- Email : ton.email@example.com
-
+- Email : dias0084@uqar.ca
 ```
 
 ---
-
-Tu veux que je te génère ce `README.md` en fichier que tu peux télécharger directement ? Je peux aussi t’aider à ajouter des **badges GitHub**, **GIF de démonstration**, ou encore un **lien vers ta fiche Marketplace** si tu me donnes l’URL.
