@@ -14,13 +14,6 @@ Elle permet de **générer du code**, **documenter automatiquement**, **faire de
 2. Allez dans l’onglet **Extensions** (`Ctrl + Shift + X`)
 3. Recherchez **Fast Coding**
 4. Cliquez sur **Installer**
-
-Ou via la ligne de commande :
-
-```bash
-code --install-extension ton-publisher-id.fast-coding
-```
-
 ---
 
 ## 🔐 Configuration
