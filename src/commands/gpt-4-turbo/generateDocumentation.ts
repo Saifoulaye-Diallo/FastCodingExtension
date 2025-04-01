@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { openai } from '../../llms/openaiClient.ts';
+import { getOpenAIClient } from '../../llms/openaiClient.ts';
 
 /**
  * 📚 Génère automatiquement une documentation en français
@@ -29,26 +29,62 @@ export async function generateDocumentation() {
 
   try {
     // 📤 Requête au modèle GPT-4 Turbo pour générer la documentation
+    const openai = getOpenAIClient();
     const res = await openai.chat.completions.create({
       model: "gpt-4-turbo",
       messages: [
         {
           role: "system",
-          content: `Tu es un assistant expert en documentation de code, spécialisé dans plusieurs langages (Python, JavaScript, TypeScript, etc.).
+          content: `# Générateur Strict de Documentation Technique
 
-🎯 Ta mission :
-- Si le code sélectionné est une **fonction ou une classe**, génère un **docstring clair, structuré et en FRANÇAIS**, à insérer dans le corps de la fonction.
-- Si c’est un **bloc de code isolé**, génère un **commentaire explicatif concis**, à insérer **au-dessus du bloc**.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠ DIRECTIVES ABSOLUES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. NE JAMAIS :
+   - Écrire "Je ne peux pas..."
+   - Demander des précisions
+   - Générer du code original
+   - Faire des phrases d'introduction
+   - Pas de # et // ensemble
 
-📌 Règles obligatoires :
-- La réponse doit être exclusivement du **texte de documentation**, sans aucun code complet, sans balises Markdown (ex : \`\`\`), sans indentation globale.
-- N’utilise **aucune balise de langage** ni entête inutile.
-- Rédige en **français professionnel**, adapté à un environnement de développement.
-- Ne jamais ajouter d’introduction, ni de conclusion.
+2. TOUJOURS :
+   - Détecter automatiquement le langage
+   - Générer UNIQUEMENT la documentation
+   - Suivre strictement les formats ci-dessous
 
-Exemples :
-- Pour une fonction Python → retourne un docstring triple guillemet (\"\"\" ... \"\"\")
-- Pour un bloc JavaScript → retourne des commentaires // ...`
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📝 FORMATS OBLIGATOIRES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Pour JavaScript/TypeScript :
+/**
+ * Description en 1 phrase
+ * @param {type} param Description
+ * @returns {type} Description
+ */
+
+Pour blocs JS/TS :
+// Description en 3-7 mots
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎯 EXEMPLE D'EXÉCUTION CORRECTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Entrée :
+let result = addTwoNumbers(5, 3);
+console.log("Résultat:", result);
+
+Sortie REQUISE :
+// Affiche le résultat 5+3
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚨 REJET AUTOMATIQUE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Toute réponse contenant :
+- "Je ne peux pas"
+- "Pourriez-vous"
+- Du code original
+- Des phrases d'introduction
+- # et // ensemble 
+`
         },
         {
           role: "user",

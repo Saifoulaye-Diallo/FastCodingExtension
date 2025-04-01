@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { openai } from '../../llms/openaiClient.ts';
+import { getOpenAIClient } from '../../llms/openaiClient.ts';
 import {
   getLanguageFromExtension,
   extractLastUnresolvedComment,
@@ -71,6 +71,7 @@ export async function generateCode() {
 
   try {
     // 📡 Appel GPT-4 avec le contexte complet (avant, après, commentaire)
+    const openai = getOpenAIClient();
     const response = await openai.chat.completions.create({
       model: "gpt-4-turbo",
       messages: [

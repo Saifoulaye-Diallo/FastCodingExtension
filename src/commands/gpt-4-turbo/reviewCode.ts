@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { openai } from '../../llms/openaiClient.ts';
+import { getOpenAIClient } from '../../llms/openaiClient.ts';
 
 /**
  * 🔍 Effectue une revue de code à l’aide de GPT-4 Turbo.
@@ -26,6 +26,7 @@ export async function reviewCode(panel?: vscode.Webview) {
 
   try {
     // 🤖 Envoi de la requête au modèle GPT-4 avec des instructions très précises
+    const openai = getOpenAIClient();
     const res = await openai.chat.completions.create({
       model: "gpt-4-turbo",
       messages: [

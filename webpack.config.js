@@ -3,7 +3,6 @@
 'use strict';
 
 const path = require('path');
-const CopyPlugin = require('copy-webpack-plugin');
 
 /** @typedef {import('webpack').Configuration} WebpackConfig */
 
@@ -36,13 +35,8 @@ const extensionConfig = {
       }
     ]
   },
-  plugins: [
-    new CopyPlugin({
-      patterns: [
-        { from: 'resources', to: 'resources' }
-      ]
-    })
-  ],
+
+  
   devtool: 'nosources-source-map',
   infrastructureLogging: {
     level: "log"
@@ -50,3 +44,7 @@ const extensionConfig = {
 };
 
 module.exports = [ extensionConfig ];
+
+
+function add_two_numbers(a, b) { /** * Calcule la somme de deux nombres. * * @param {number} a - Le premier nombre à additionner. * @param {number} b - Le deuxième nombre à additionner. * * @return {number} La somme de a et b. */ return a + b; } module.exports.add_two_numbers = add_two_numbers;
+

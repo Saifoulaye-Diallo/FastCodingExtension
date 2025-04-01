@@ -1,5 +1,5 @@
 
-import { openai } from '../../llms/openaiClient.ts';
+import { getOpenAIClient } from '../../llms/openaiClient.ts';
 
 /**
  * 📬 Envoie un message texte à l'API OpenAI (GPT-4 Turbo) et retourne une réponse formatée.
@@ -25,8 +25,9 @@ import { openai } from '../../llms/openaiClient.ts';
  */
 export async function sendMessageToAI(userMessage: string): Promise<string> {
     console.log("[Extension] 🧠 Envoi du message au modèle OpenAI :", userMessage);
-
+    
     try {
+        const openai = getOpenAIClient();
         const response = await openai.chat.completions.create({
             model: 'gpt-4-turbo',
             messages: [

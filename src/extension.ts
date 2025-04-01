@@ -4,7 +4,8 @@ import { AIInlineCompletionProvider } from './providers/AIInlineCompletionProvid
 import { handleTypingEvents } from './providers/AIOnTypeListener';
 import { reviewCode } from './commands/gpt-4-turbo/reviewCode';
 import { generateDocumentation } from './commands/gpt-4-turbo/generateDocumentation';
-
+import { setApiKey } from './commands/gpt-4-turbo/setApiKey';
+import { setExtensionContext } from './utils/context';
 /**
  * 📌 7️⃣ Fonction appelée automatiquement lors de l'activation de l’extension.
  * 
@@ -14,8 +15,14 @@ import { generateDocumentation } from './commands/gpt-4-turbo/generateDocumentat
  * @param context - Le contexte d’exécution de l’extension VSCode.
  */
 export function activate(context: vscode.ExtensionContext) {
+    setExtensionContext(context);
     console.log('🎉 Fast Coding est maintenant actif !');
-
+    
+    context.subscriptions.push(
+        vscode.commands.registerCommand('fastCoding.setApiKey', () => setApiKey(context))
+    );
+      
+    
     // 📌 Enregistrement du WebviewViewProvider pour afficher une interface dans la barre latérale
 	const viewProvider = new CodeGenViewProvider(context.extensionUri);
     context.subscriptions.push(

@@ -1,5 +1,5 @@
-import * as vscode from 'vscode';
-import { openai } from '../../llms/openaiClient.ts';
+
+import { getOpenAIClient } from '../../llms/openaiClient.ts';
 import { getConfigurationModel } from '../../utils/settings';
 
 /**
@@ -40,6 +40,7 @@ export async function codeCompletion(before: string, after: string = ''): Promis
     switch (model) {
       case 'GPT-4':
       default: {
+        const openai = getOpenAIClient();
         const completion = await openai.chat.completions.create({
           model: "gpt-4-turbo",
           messages: [

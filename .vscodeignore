@@ -1,8 +1,9 @@
+# Fichiers/dossiers à ignorer (exemples standards)
 .vscode/**
 .vscode-test/**
 out/**
 node_modules/**
-src/**
+
 .gitignore
 .yarnrc
 webpack.config.js
@@ -10,5 +11,8 @@ vsc-extension-quickstart.md
 **/tsconfig.json
 **/eslint.config.mjs
 **/*.map
-**/*.ts
+
 **/.vscode-test.*
+# Fichiers à NE PAS ignorer (même s'ils sont dans src/)
+!src/**
+!**/*.ts  # Inclut les fichiers .ts si nécessaire
