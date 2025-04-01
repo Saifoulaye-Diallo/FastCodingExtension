@@ -1,8 +1,3 @@
-Bien sûr ! Voici un exemple **complet et professionnel de README.md** pour ton extension **Fast Coding**, déjà publiée sur la Marketplace VS Code, avec toutes les fonctionnalités que tu m’as décrites.
-
----
-
-```markdown
 # ⚡ Fast Coding – Extension VS Code
 
 **Fast Coding** est une extension VS Code alimentée par GPT-4 Turbo (OpenAI) qui permet aux développeurs de gagner du temps grâce à l’intelligence artificielle. Elle propose un panneau de chat interactif, la génération de code à partir de commentaires, la documentation automatique, la revue de code, et même la complétion de code en temps réel.
@@ -26,7 +21,6 @@ Ou installez directement avec la ligne de commande :
 code --install-extension ton-publisher-id.fast-coding
 ```
 
----
 
 ## 🔐 Configuration
 
