@@ -180,7 +180,7 @@ MIT © Saifoulaye Diallo – UQAR 2025
 
 ## 📬 Contact
 
-- GitHub : [https://github.com/Saifoulaye-Diallo/FassCodingExtension](https://github.com/Saifoulaye-Diallo/FassCodingExtension)
+- GitHub : [https://github.com/Saifoulaye-Diallo/FastCodingExtension](https://github.com/Saifoulaye-Diallo/FastCodingExtension)
 - Email :saifoulayediallo2019@gmail.com
 
 ```
