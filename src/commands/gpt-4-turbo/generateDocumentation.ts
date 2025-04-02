@@ -35,82 +35,89 @@ export async function generateDocumentation() {
       messages: [
         {
           role: "system",
-          content: `# Générateur Strict de Documentation Technique
+          content: `Règles pour générer de la documentation Python uniquement :
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-⚠ DIRECTIVES ABSOLUES
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-1. NE JAMAIS :
-   - Écrire "Je ne peux pas..."
-   - Demander des précisions
-   - Générer du code original
-   - Faire des phrases d'introduction
-   - Pas de # et // ensemble
+          INTERDIT :
+          - Générer du code Python
+          - Écrire "je ne peux pas", "pourriez-vous", etc.
+          - Générer un commentaire avec "# #" (double dièse)
+          - Mélanger "#" et """ dans un même bloc
+          - Écrire des commentaires de plus de 7 mots
+          - Générer des lignes vides ou inutiles
 
-2. TOUJOURS :
-   - Détecter automatiquement le langage
-   - Générer UNIQUEMENT la documentation
-   - Suivre strictement les formats ci-dessous
+          OBLIGATOIRE :
+          - Langage ciblé : Python uniquement
+          - Générer uniquement de la documentation
+          - Utiliser exactement un "#" pour les commentaires simples
+          - Utiliser """ pour les fonctions/classes
+          - Toujours documenter uniquement ce qui suit le curseur
+          - Phrase claire et courte (3 à 7 mots)
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📝 FORMATS OBLIGATOIRES
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Pour JavaScript/TypeScript :
-/**
- * Description en 1 phrase
- * @param {type} param Description
- * @returns {type} Description
- */
+          FORMATS :
+          Pour fonction/classe :
+          """
+          Description en une phrase.
 
-Pour blocs JS/TS :
-// Description en 3-7 mots
+          :param nom: Description
+          :return: Description
+          """
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🎯 EXEMPLE D'EXÉCUTION CORRECTE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Entrée :
-let result = addTwoNumbers(5, 3);
-console.log("Résultat:", result);
+          Pour instruction simple (print, if, etc.) :
+          # Description courte en 3-7 mots
 
-Sortie REQUISE :
-// Affiche le résultat 5+3
+          EXEMPLES :
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🚨 REJET AUTOMATIQUE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Toute réponse contenant :
-- "Je ne peux pas"
-- "Pourriez-vous"
-- Du code original
-- Des phrases d'introduction
-- # et // ensemble 
-`
+          Entrée :
+          print("Hello, world!")
+          Sortie :
+          # Affiche un message simple
+
+          Entrée :
+          def addition(a, b):
+              return a + b
+          Sortie :
+          """
+          Additionne deux nombres.
+
+          :param a: Premier nombre
+          :param b: Deuxième nombre
+          :return: Résultat de l'addition
+          """
+
+          REJET AUTOMATIQUE si :
+          - Commentaire commence par "# #"
+          - Code Python généré
+          - Forme incorrecte ou mélange de styles'
+          `
         },
         {
           role: "user",
           content: selectedCode
         }
       ],
-      temperature: 0.4,
-      max_tokens: 200
+      temperature: 0.5,
+      max_tokens: 100,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0
     });
 
     const doc = res.choices[0].message?.content?.trim();
 
-    // ⚠ Avertit si l'IA n’a rien généré
+    // ⚠Avertit si l'IA n’a rien généré
     if (!doc) {
       vscode.window.showWarningMessage("⚠ Aucune documentation générée.");
       return;
     }
 
-    // 🧮 Calcul de l’indentation courante de la ligne sélectionnée
+    //  Calcul de l’indentation courante de la ligne sélectionnée
     const selection = editor.selection;
     const startLine = selection.start.line;
     const lineText = editor.document.lineAt(startLine).text;
     const indentMatch = lineText.match(/^\s*/);
     const indentation = indentMatch ? indentMatch[0] + '    ' : '    ';
 
-    // 🖊️ Insertion de la documentation générée
+    //  Insertion de la documentation générée
     editor.edit(editBuilder => {
       if (isFunctionOrClass) {
         // 🔹 Cas : fonction ou classe ➜ insère un docstring indenté à l'intérieur
@@ -123,13 +130,17 @@ Toute réponse contenant :
         editBuilder.insert(insertPosition, formattedDocstring);
       } else {
         // 🔹 Cas : bloc de code ➜ insère un commentaire au-dessus
-        const commentPrefix = lineText.trimStart().startsWith('//') ? '// ' : '# ';
-        const formattedComment = doc
-          .split('\n')
-          .map(line => commentPrefix + line)
-          .join('\n') + '\n';
+      const formattedComment = doc
+      .split('\n')
+      .filter(line => line.trim()) // ignore les lignes vides
+      .map(line => {
+        const trimmed = line.trim();
+        return trimmed.startsWith('#') ? line : '# ' + line;
+      })
+      .join('\n') + '\n';
 
-        editBuilder.insert(selection.start, formattedComment);
+      editBuilder.insert(selection.start, formattedComment);
+
       }
     });
   } catch (error) {

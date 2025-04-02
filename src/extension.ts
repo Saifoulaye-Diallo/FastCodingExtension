@@ -4,7 +4,7 @@ import { AIInlineCompletionProvider } from './providers/AIInlineCompletionProvid
 import { handleTypingEvents } from './providers/AIOnTypeListener';
 import { reviewCode } from './commands/gpt-4-turbo/reviewCode';
 import { generateDocumentation } from './commands/gpt-4-turbo/generateDocumentation';
-import { setApiKey } from './commands/gpt-4-turbo/setApiKey';
+import { setApiKey } from './utils/setApiKey';
 import { setExtensionContext } from './utils/context';
 import { generateCode } from './commands/gpt-4-turbo/generateCode';
 /**

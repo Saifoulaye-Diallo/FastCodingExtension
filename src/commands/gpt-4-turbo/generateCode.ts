@@ -77,7 +77,7 @@ export async function generateCode() {
       messages: [
         {
           role: "system",
-          content: `Tu es une intelligence artificielle avancée spécialisée dans la génération de code, à la manière de GitHub Copilot.
+          content: `Tu es une intelligence artificielle avancée spécialisée dans la génération de code, à la manière de GitHub Copilot, toujours repondre dans la langue detecter dans le contexte.
 
 Ta tâche est de générer **uniquement** le code demandé, en suivant strictement les contraintes suivantes :
 

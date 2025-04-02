@@ -29,25 +29,44 @@ export async function reviewCode(panel?: vscode.Webview) {
     const openai = getOpenAIClient();
     const res = await openai.chat.completions.create({
       model: "gpt-4-turbo",
+      temperature: 0.1, // très rigoureux, moins de créativité
+      max_tokens: 200,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
       messages: [
         {
           role: "system",
-          content: `Tu es un assistant de revue et de débogage de code. 
-Tu dois faire deux choses :
-1. Donner une analyse du code (qualité, style, erreurs potentielles, améliorations).
-2. Proposer une version corrigée ou améliorée du code si nécessaire.
-Retourne les deux sections clairement séparées avec les balises suivantes :
----REVIEW---
-[Analyse du code]
----CODE---
-[Code corrigé ou optimisé]
-
-Règles strictes :
-- Ne retourne jamais de balises Markdown comme \`\`\` ou des annotations de langage comme \`\`\`python.
-- Réponds uniquement en FRANÇAIS.
-- N'invente pas de noms de fonctions ou variables qui ne sont pas présents dans le code d'origine.
-- Ne change pas la logique du code sans raison valable.
-- Si le code est déjà optimal, indique-le clairement dans la section REVIEW.`
+          content: `
+          Tu es un assistant expert en revue de code Python, rigoureux sur les conventions de style, de sécurité et de documentation.
+          
+          Ta mission est divisée en deux sections obligatoires :
+          
+          ---REVIEW---
+          - Analyse en FRANÇAIS uniquement.
+          - Tu dois commenter la qualité du code, son style, sa lisibilité, sa sécurité, sa robustesse et la clarté de sa documentation.
+          - Identifie précisément les manques (docstring, types, indentations, vérifications, etc.).
+          
+          ---CODE---
+          - Code corrigé uniquement si nécessaire.
+          - Le code doit être **valide, complet, bien indenté**, et **ne pas contenir de Markdown** ou de décorations.
+          - S'il y a une fonction, ajoute **toujours** une docstring formelle multi-ligne avec \`"""\`, **placée sur une ligne propre** et indentée.
+          - Ta docstring doit toujours inclure les sections \`:param\` (et \`:return:\` si nécessaire).
+          - Si le paramètre est typé implicitement, mentionne son type (\`str\`, \`int\`, etc.).
+          - Si l’argument d’entrée peut poser problème, ajoute une vérification \`isinstance(...)\` avec \`raise ValueError(...)\`.
+          
+          🚫 INTERDIT :
+          - Aucune balise Markdown comme \`\`\` ou \`\`\`python.
+          - Aucune phrase d’introduction ou justification inutile.
+          - Aucun nom de fonction ou variable inventé.
+          - Aucune altération du comportement sans nécessité explicite.
+          
+          ✅ Résultat attendu :
+          - Une analyse claire dans la section REVIEW
+          - Un code corrigé propre et conforme PEP 8 dans la section CODE
+          - Une docstring correcte (triple guillemets, lignes propres, param, return si applicable)
+          `
+          
         },
         {
           role: "user",
@@ -60,23 +79,37 @@ Règles strictes :
     const rawOutput = res.choices[0].message?.content ?? "❌ Aucune suggestion reçue.";
 
     // 🪓 Découpe le texte selon les balises personnalisées ---REVIEW--- et ---CODE---
-    const [_, reviewPart, codePart] = rawOutput.split(/---REVIEW---|---CODE---/);
+    const reviewMatch = rawOutput.match(/---REVIEW---([\s\S]*?)---CODE---/);
+    const codeMatch = rawOutput.match(/---CODE---([\s\S]*)$/);
 
-    if (panel) {
-      // 📬 Envoi du contenu à la WebView si elle est disponible
-      if (reviewPart?.trim()) {
-        panel.postMessage({ command: 'botReply', text: `\n\n### Code revue :\n\n${reviewPart.trim()}` });
-      }
-      if (codePart?.trim()) {
-        panel.postMessage({ command: 'botReply', text: `\n\n### Code suggéré :\n\n${codePart.trim()}` });
-      }
-    } else {
-      // ✅ Cas où aucune WebView n’est active
-      vscode.window.showInformationMessage("✅ Revue générée, mais aucun panneau WebView n’est ouvert.");
+    const reviewPart = reviewMatch?.[1]?.trim();
+    const codePart = codeMatch?.[1]?.trim();
+    const fixedCodePart = codePart ? fixPythonDocstring(codePart) : '';
+
+
+
+    if (panel && (reviewPart || fixedCodePart)) {
+      const fullMessage = [
+        reviewPart ? `### 📝 Revue du code\n\n${reviewPart.trim()}` : '',
+        fixedCodePart ? `### 💡 Code suggéré\n\n\`\`\`python\n${fixedCodePart.trim()}\n\`\`\`` : ''
+      ].join('\n\n').trim();
+    
+      panel.postMessage({ command: 'botReply', text: fullMessage });
     }
-
+    
   } catch (error) {
     console.error('[FastCoding] ❌ Erreur lors de la revue :', error);
     vscode.window.showErrorMessage("Erreur pendant la revue de code.");
   }
 }
+
+function fixPythonDocstring(code: string): string {
+  return code.replace(
+    /^(\s*def .*?\)):\s*"""/gm,
+    (_match, defLine) => {
+      const indentLevel = defLine.match(/^\s*/)?.[0] ?? '';
+      return `${defLine}:\n${indentLevel}    """`;
+    }
+  );
+}
+

@@ -56,9 +56,8 @@ export class CodeGenViewProvider implements vscode.WebviewViewProvider {
                 this.sendMessageToWebview(userMessage, 'userMessage');
 
                 // Envoie le message à GPT-4 Turbo via l'API
-                console.log("[Extension] 🚀 Envoi du message à OpenAI...");
                 const aiResponse = await sendMessageToAI(userMessage);
-                console.log("[Extension] ✅ Réponse reçue d'OpenAI :", aiResponse);
+        
 
                 // Affiche la réponse de l'IA dans la WebView
                 this.sendMessageToWebview(aiResponse, 'botReply');
@@ -73,7 +72,6 @@ export class CodeGenViewProvider implements vscode.WebviewViewProvider {
      * @param command - Le type de message (ex : 'userMessage', 'botReply').
      */
     private sendMessageToWebview(text: string, command: string) {
-        console.log(`[Extension] 📤 Envoi du message à la WebView - Commande: ${command}, Texte: ${text}`);
         if (this._view) {
             this._view.webview.postMessage({ command, text });
         }

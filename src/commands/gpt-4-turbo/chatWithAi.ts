@@ -83,7 +83,6 @@ def insertion_sort(arr):
         });
 
         const aiResponse = response.choices[0]?.message?.content || "Désolé, je n'ai pas pu générer de réponse.";
-        console.log("[Extension] 🤖 Réponse OpenAI reçue :", aiResponse);
         return aiResponse;
 
     } catch (error) {
