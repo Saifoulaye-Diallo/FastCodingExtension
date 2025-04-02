@@ -184,5 +184,3 @@ MIT © Saifoulaye Diallo – UQAR 2025
 - Email :saifoulayediallo2019@gmail.com
 
 ```
-
----
