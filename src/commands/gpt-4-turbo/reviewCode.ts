@@ -17,7 +17,7 @@ export async function reviewCode(panel?: vscode.Webview) {
 
   // 📄 Récupère le code sélectionné dans l’éditeur
   const selectedCode = editor.document.getText(editor.selection).trim();
-
+  console.log("code recu :",selectedCode)
   // 🚨 Si aucun code n’est sélectionné, on avertit l'utilisateur
   if (!selectedCode) {
     vscode.window.showWarningMessage("⚠ Veuillez sélectionner du code à analyser.");
@@ -29,17 +29,16 @@ export async function reviewCode(panel?: vscode.Webview) {
     const openai = getOpenAIClient();
     const res = await openai.chat.completions.create({
       model: "gpt-4-turbo",
-      temperature: 0.1, // très rigoureux, moins de créativité
-      max_tokens: 200,
+      temperature: 0.1, 
+      max_tokens: 1000,
       top_p: 1,
       frequency_penalty: 0,
       presence_penalty: 0,
       messages: [
         {
           role: "system",
-          content: `
-          Tu es un assistant expert en revue de code Python, rigoureux sur les conventions de style, de sécurité et de documentation.
-          
+          content: `Tu es un assistant expert en revue de code Python, rigoureux sur les conventions de style, de sécurité et de documentation.
+
           Ta mission est divisée en deux sections obligatoires :
           
           ---REVIEW---
@@ -48,24 +47,22 @@ export async function reviewCode(panel?: vscode.Webview) {
           - Identifie précisément les manques (docstring, types, indentations, vérifications, etc.).
           
           ---CODE---
-          - Code corrigé uniquement si nécessaire.
-          - Le code doit être **valide, complet, bien indenté**, et **ne pas contenir de Markdown** ou de décorations.
-          - S'il y a une fonction, ajoute **toujours** une docstring formelle multi-ligne avec \`"""\`, **placée sur une ligne propre** et indentée.
-          - Ta docstring doit toujours inclure les sections \`:param\` (et \`:return:\` si nécessaire).
-          - Si le paramètre est typé implicitement, mentionne son type (\`str\`, \`int\`, etc.).
-          - Si l’argument d’entrée peut poser problème, ajoute une vérification \`isinstance(...)\` avec \`raise ValueError(...)\`.
+          - Fournis le code corrigé **dans un bloc Markdown bien formaté** comme ceci : \`\`\`python ... \`\`\`
+          - Le code doit être **valide, complet, bien indenté**, et suivre les conventions PEP 8.
+          - S'il y a une fonction, ajoute **toujours** une docstring multi-ligne formelle (avec triple guillemets \`"""\`), sur une ligne propre et bien indentée.
+          - Inclure toujours les sections :param: et :return: si applicable.
+          - Si un argument peut poser problème, ajoute une vérification avec isinstance(...) et raise ValueError(...).
           
           🚫 INTERDIT :
-          - Aucune balise Markdown comme \`\`\` ou \`\`\`python.
-          - Aucune phrase d’introduction ou justification inutile.
-          - Aucun nom de fonction ou variable inventé.
-          - Aucune altération du comportement sans nécessité explicite.
+          - Ne change pas le nom des variables sauf si nécessaire.
+          - N'ajoute aucune phrase introductive ou décorative.
+          - Réponds strictement selon les deux blocs définis.
           
           ✅ Résultat attendu :
-          - Une analyse claire dans la section REVIEW
-          - Un code corrigé propre et conforme PEP 8 dans la section CODE
-          - Une docstring correcte (triple guillemets, lignes propres, param, return si applicable)
-          `
+          - Une section REVIEW claire.
+          - Un bloc CODE bien formatté en Markdown.
+          ` 
+          
           
         },
         {
@@ -79,20 +76,22 @@ export async function reviewCode(panel?: vscode.Webview) {
     const rawOutput = res.choices[0].message?.content ?? "❌ Aucune suggestion reçue.";
 
     // 🪓 Découpe le texte selon les balises personnalisées ---REVIEW--- et ---CODE---
-    const reviewMatch = rawOutput.match(/---REVIEW---([\s\S]*?)---CODE---/);
+    const reviewMatch = rawOutput.match(/---REVIEW---([\s\S]*?)(?:---CODE---|$)/);
     const codeMatch = rawOutput.match(/---CODE---([\s\S]*)$/);
 
     const reviewPart = reviewMatch?.[1]?.trim();
     const codePart = codeMatch?.[1]?.trim();
     const fixedCodePart = codePart ? fixPythonDocstring(codePart) : '';
 
-
+    console.log("Reponse du LLM :", rawOutput)
+    console.log("La revue est : ",reviewMatch)
 
     if (panel && (reviewPart || fixedCodePart)) {
       const fullMessage = [
-        reviewPart ? `### 📝 Revue du code\n\n${reviewPart.trim()}` : '',
-        fixedCodePart ? `### 💡 Code suggéré\n\n\`\`\`python\n${fixedCodePart.trim()}\n\`\`\`` : ''
+        reviewPart ? `📝 Revue du code\n\n${reviewPart.trim()}` : '',
+        fixedCodePart ? `💡 Code suggéré\n\n${fixedCodePart.trim()}` : ''
       ].join('\n\n').trim();
+      
     
       panel.postMessage({ command: 'botReply', text: fullMessage });
     }

@@ -80,10 +80,19 @@ export const getWebviewContent = (): string => {
         .messages-container {
             -ms-overflow-style: none;  /* IE and Edge */
             scrollbar-width: none;     /* Firefox */
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+
+
         }
         
         .messages-container::-webkit-scrollbar {
             display: none;             /* Chrome, Safari and Opera */
+        }
+        pre code {
+        white-space: pre-wrap;
+        word-break: break-word;
         }
 
         /* Code block styles */
@@ -148,7 +157,7 @@ export const getWebviewContent = (): string => {
                     <div class="flex-shrink-0">
                         <i class="fas fa-robot text-blue-500"></i>
                     </div>
-                    <div class="bg-[#21262d] rounded-lg p-4 max-w-3xl">
+                    <div class="bg-[#21262d] rounded-lg p-4 max-w-md prose prose-invert relative">
                         <p>👋 Bonjour ! Je suis votre assistant IA pour le code. Que puis-je faire pour vous aujourd’hui&nbsp;?</p>
                     </div>
                 </div>
@@ -210,17 +219,17 @@ export const getWebviewContent = (): string => {
                 // Convertir Markdown en HTML
                 const htmlContent = marked.parse(message);
 
-                // Injecter le HTML dans la div
-                messageDiv.innerHTML = \`
-                    <div class="flex space-x-3 \${isUser ? 'flex-row-reverse' : ''}">
-                        <div class="flex-shrink-0">
-                            <i class="fas \${icon} \${iconColor}"></i>
-                        </div>
-                        <div class="bg-[#21262d] rounded-lg p-4 max-w-3xl prose prose-invert relative">
-                            \${htmlContent}
-                        </div>
+               messageDiv.innerHTML = \`
+                <div class="flex space-x-3 \${isUser ? 'flex-row-reverse' : ''}">
+                    <div class="flex-shrink-0">
+                        <i class="fas \{icon} \${iconColor}"></i>
                     </div>
+                    <div class="bg-[#21262d] rounded-lg p-4 max-w-md prose prose-invert relative">
+                        \${htmlContent}
+                    </div>
+                </div>
                 \`;
+
 
                 chatMessages.appendChild(messageDiv);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
